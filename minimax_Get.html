@@ -9,8 +9,20 @@
         .loading { display: none; }
     </style>
 </head>
-<body class="flex items-center justify-center h-screen bg-gray-900">
-    <div class="bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+<body>
+    <nav class="bg-gray-800 py-4">
+        <div class="container mx-auto flex justify-center">
+            <ul class="flex space-x-10">
+                <li><a href="minimax_Text.html" class="text-yellow-400 hover:text-yellow-300">Text</a></li>
+                <li><a href="minimax_Image.html" class="text-yellow-400 hover:text-yellow-300">Image</a></li>
+                <li><a href="minimax_Subject-Reference.html" class="text-yellow-400 hover:text-yellow-300">Subject-Reference</a></li>
+                <li><a href="minimax_Get.html" class="text-yellow-400 hover:text-yellow-300">GET</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="flex items-center justify-center h-screen bg-gray-900">
+        <div class="bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center">
         <h1 class="text-white text-3xl font-bold mb-6 text-center">Video<br><span class="text-yellow-400">Download</span></h1>
         
         <label for="task-id" class="text-white text-lg font-semibold mb-2">Task id:</label>
@@ -23,6 +35,7 @@
         
         <a id="download-btn" href="#" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200 mt-4 hidden">Download Video</a>
     </div>
+    </main>
 
     <script>
         const apiKey = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiJKb2hubnkgTGVlIiwiVXNlck5hbWUiOiJKb2hubnkgTGVlIiwiQWNjb3VudCI6IiIsIlN1YmplY3RJRCI6IjE5Nzc2MTkzNzg1MDEzMjkyMzYiLCJQaG9uZSI6IiIsIkdyb3VwSUQiOiIxOTc3NjE5Mzc4NDk3MTMwODM2IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiam9obm55bGVlY2hldWt5YW5AZ21haWwuY29tIiwiQ3JlYXRlVGltZSI6IjIwMjUtMTAtMzEgMDk6NTI6MDIiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.Fqhu2-miIUrzYMHiaTKb6FQY9YLrOT2SO5Z1ys6Y2C33yx6u5gxMYeczMjPz4vzl10P0rPDRYJcw3bqT33OSuke0JrIIrKm5bshigHmMK44lrxH9HbEBM11TYnaIJXN7TjQuh-EPZT6TKki36yqTyBMQhYFJ16-KlcLFuXv3eB8u88qUZdsD3QYR8VFEynHIuKkxEywmnaSjjJejz60lMy6ETsR26BJ9duGolY7Soxg3AEJO8kqMnpPhEmSMXiCLormZYEek3-t-8FiexOLqXbpz2FdJFig4IlNgkUFK3BpQ6JQA6vN69AP7eY5QDMsrQiLwMLg1CmeNeQBbfrakSg';  // 替換為您的 API 密鑰
