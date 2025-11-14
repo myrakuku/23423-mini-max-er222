@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S2V</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: white; /* 深黑色背景 */
+        }
+    </style>
+</head>
+<body>
+    <nav class="py-4">
+        <div class="container ml-5 flex items-center">
+            <img src="./public/ITELogo_Blue_White.png" alt="Logo" style="width: 60px;">
+            <p>宏業教育中心<br>Innovation Trend Education Centre</p>
+        </div>
+        <div class="container flex mt-4 ml-10">
+            <ul class="flex space-x-8">
+                <li><a href="T2V.html" class="text-gray-500 hover:text-gray-800">T2V</a></li>
+                <li><a href="I2V.html" class="text-gray-500 hover:text-gray-800">I2V</a></li>
+                <li><a href="S2V.html" class="text-gray-800 hover:text-gray-300 font-extrabold underline">S2V</a></li>
+                <li><a href="Get.html" class="text-gray-500 hover:text-gray-800">GET Video</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="p-5 ml-5">
+        <h1 class="text-gray-800 text-2xl font-bold"><span class="text-yellow-400">Subject Reference</span>-To-Video</h1>
+        <p class="text-gray-800 text-sm mb-6">Aims to create videos featuring a specific, consistent subject (e.g., a person, an object, or a pet) based on provided reference image and a descriptive text prompt. </p>
+
+        <!-- Generate Image: image-01 -->
+        <div class="">
+        <h2 class="text-gray-800 text-xl mb-6">Step 1. Generate Image from Text</span></h1>
+        <p class="mb-1">Prompt</p>
+        <textarea id="image_prompt" rows="7" class="w-full p-2 rounded-md border border-gray-300 bg-gray-100 text-gray-800 placeholder-gray-500" placeholder="Please enter wording... Text description of the video, up to 2000 characters."></textarea><br>
+        <div class="my-5">
+            <span class="text-gray-800 text-md mb-6 text-center pr-3">Video Model:</span>
+            <select id="image_model" class="border rounded-md border-gray-300">
+                <option value="image-01">image-01</option>
+            </select>
+        </div>
+        <div>
+            <span class="text-gray-800 text-md mb-6 text-center pr-3">Image aspect ratio</span>
+            <select id="image_ratio" class="border rounded-md border-gray-300">
+                <!-- <option value="1:1">1:1 (1024x1024)</option> -->
+                <!-- <option value="16:9">16:9 (1280x720)</option> -->
+                <option value="4:3">4:3 (1152x864)</option>
+                <option value="3:2">3:2 (1248x832)</option>
+                <option value="2:3">2:3 (832x1248)</option>
+                <option value="3:4">3:4 (864x1152)</option>
+                <!-- <option value="9:16">9:16 (720x1280)</option> -->
+                <!-- <option value="21:9">21:9 (1344x576)</option> -->
+            </select>
+        </div>
+        <div class="">
+            <button id="generate-image-btn" class="mt-10 mb-4 bg-gray-800 hover:bg-gray-400 text-white font-semibold py-2 px-4 rounded-md transition duration-200">Generate Image</button>
+        </div>
+        <div>
+            <p id="image_status_process" class="mt-4 text-blue-600"></p>
+            <p id="image_status_success" class="mt-4 text-green-600"></p>
+            <p id="image_status_fail" class="mt-4 text-red-600"></p>
+            <p class="my-5 text-gray-500">Task ID: <span id="image-task-id"></span></p>
+        </div>
+                <!-- 生成的图片显示区域 -->
+                <div id="image-result-container" class="mt-6 mb-4 hidden">
+                    <h3 class="text-lg font-medium mb-3">Generated Image:</h3>
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <!-- 这里显示生成的图片 -->
+                        <img id="image-gen" src="" width="768px" height="auto" alt="Generated Image">
+                        
+                        <div class="mt-4">
+                            <a id="download-image-btn" href="#" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200 inline-flex items-center">
+                                <i class="fas fa-download mr-2"></i>Download Image
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <!-- S2V -->
+        <div class="">
+        <h2 class="text-gray-800 text-xl mb-6">Step 2. Generate Video from Text + Image</span></h1>
+        <p class="mb-1">Prompt</p>
+        <textarea id="prompt" rows="7" class="w-full p-2 rounded-md border border-gray-300 bg-gray-100 text-gray-800 placeholder-gray-500" placeholder="Please enter wording... Text description of the video, up to 2000 characters."></textarea><br>
+        <div class="my-5">
+            <span class="text-gray-800 text-md mb-6 text-center pr-3">Video Model:</span>
+            <select id="model" class="border rounded-md border-gray-300">
+                <option value="S2V-01">S2V-01</option>
+            </select>
+        </div>
+        <!-- <div>
+            <span class="text-gray-800 text-md mb-6 text-center pr-3">Video Resolution:</span>
+            <select id="resolution" class="border rounded-md border-gray-300">
+                <option value="512P">512P</option>
+                <option value="768P">768P</option>
+                <option value="1080P">1080P</option>
+                <option value="720P">720P( I2V only)</option>
+            </select>
+        </div> -->
+        <div class="">
+            <button id="generate-btn" class="mt-10 mb-4 bg-gray-800 hover:bg-gray-400 text-white font-semibold py-2 px-4 rounded-md transition duration-200">Generate</button>
+        </div>
+        <div>
+            <p id="status_notice" class="mt-4 text-blue-400"></p>
+            <p id="status_process" class="mt-4 text-blue-600"></p>
+            <p id="status_success" class="mt-4 text-green-600"></p>
+            <p id="status_fail" class="mt-4 text-red-600"></p>
+            <p class="my-5 text-gray-500">Task ID: <span id="task-id"></span></p>
+            <a id="download-btn" href="#" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200 hidden">Download Video</a>
+        </div>
+        </div>
+    </main>
+
+<!-- Gen Photo: image-01 -->
+<script>
+    let generatedImageUrl = '';
+        document.addEventListener("DOMContentLoaded", function() {
+            // API密钥
+            const apiKey = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiJKb2hubnkgTGVlIiwiVXNlck5hbWUiOiJKb2hubnkgTGVlIiwiQWNjb3VudCI6IiIsIlN1YmplY3RJRCI6IjE5Nzc2MTkzNzg1MDEzMjkyMzYiLCJQaG9uZSI6IiIsIkdyb3VwSUQiOiIxOTc3NjE5Mzc4NDk3MTMwODM2IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiam9obm55bGVlY2hldWt5YW5AZ21haWwuY29tIiwiQ3JlYXRlVGltZSI6IjIwMjUtMTAtMzEgMDk6NTI6MDIiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.Fqhu2-miIUrzYMHiaTKb6FQY9YLrOT2SO5Z1ys6Y2C33yx6u5gxMYeczMjPz4vzl10P0rPDRYJcw3bqT33OSuke0JrIIrKm5bshigHmMK44lrxH9HbEBM11TYnaIJXN7TjQuh-EPZT6TKki36yqTyBMQhYFJ16-KlcLFuXv3eB8u88qUZdsD3QYR8VFEynHIuKkxEywmnaSjjJejz60lMy6ETsR26BJ9duGolY7Soxg3AEJO8kqMnpPhEmSMXiCLormZYEek3-t-8FiexOLqXbpz2FdJFig4IlNgkUFK3BpQ6JQA6vN69AP7eY5QDMsrQiLwMLg1CmeNeQBbfrakSg';
+            
+
+            // Generate Image按钮点击事件
+            document.getElementById('generate-image-btn').addEventListener('click', async () => {
+                
+                const model = document.getElementById('image_model').value;
+                const prompt = document.getElementById('image_prompt').value;
+                const ratio = document.getElementById('image_ratio').value;
+                
+                // 验证输入
+                if (!prompt.trim()) {
+                    showStatus('fail', 'Please enter a prompt description.');
+                    return;
+                }
+                // 禁用按钮防止重复点击
+                const generateBtn = document.getElementById('generate-image-btn');
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Generating...';
+
+                
+                try {
+                    // 显示处理状态
+                    showStatus('process', 'Generating image... The generation process will take an minutes. Please do not leave this page.');
+                    
+                    // 调用图片生成API
+                    const result = await generateImage({
+                        model: model,
+                        prompt: prompt,
+                        aspect_ratio: ratio,
+                        response_format: "url",
+                        n: 1
+                    });
+                    
+                    // 成功生成图片
+                    if (result.base_resp.status_code === 0 && result.data.image_urls && result.data.image_urls.length > 0) {
+                        // 设置请求ID
+                        document.getElementById('image-task-id').textContent = result.id;
+                        // 显示成功状态
+                        showStatus('success', 'Image generated successfully!');
+                        // 显示生成的图片
+                        displayGeneratedImage(result.data.image_urls[0]);
+                        generateBtn.disabled = false; // 启用按钮并恢复状态
+                        generateBtn.innerHTML = 'Generated';
+                    } else {
+                        throw new Error(result.base_resp.status_msg || 'Image generation failed');
+                        generateBtn.disabled = false; // 启用按钮并恢复状态
+                        generateBtn.innerHTML = 'Fail';
+                        downloadElement.style.display = 'none';
+                    }
+                    
+                } catch (error) {
+                    console.error('Image generation failed:', error);
+                    showStatus('fail', 'Error: ' + error.message);
+                    generateBtn.disabled = false; // 启用按钮并恢复状态
+                    generateBtn.innerHTML = 'Fail';
+                    downloadElement.style.display = 'none';
+                }
+            });
+            
+            // 显示状态信息
+            function showStatus(type, message) {
+                const element = document.getElementById(`image_status_${type}`);
+                element.textContent = message;
+                element.classList.remove('hidden');
+            }
+            
+            
+            // 显示生成的图片
+            function displayGeneratedImage(imageUrl) {
+                const imageElement = document.getElementById('image-gen');
+                const downloadBtn = document.getElementById('download-image-btn');
+                const resultContainer = document.getElementById('image-result-container');
+                
+                // 设置图片URL
+                imageElement.src = imageUrl;
+                imageElement.style.display = 'block';
+
+                
+                // 设置下载链接
+                downloadBtn.href = imageUrl;
+                downloadBtn.download = 'generated-image.jpg';
+                downloadBtn.classList.remove('hidden');               
+                
+                // 显示结果容器
+                resultContainer.classList.remove('hidden');
+                generatedImageUrl = imageUrl
+            }
+            
+            // 调用图片生成API
+            async function generateImage(params) {
+                try {
+                    const response = await fetch('https://api.minimax.io/v1/image_generation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify(params)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    return data;
+                    
+                } catch (error) {
+                    console.error('API call failed:', error);
+                    throw new Error('API call failed: ' + error.message);
+                }
+            }
+        });
+</script>
+
+
+<!-- Gen Video: S2V --> 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const apiKey = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiJKb2hubnkgTGVlIiwiVXNlck5hbWUiOiJKb2hubnkgTGVlIiwiQWNjb3VudCI6IiIsIlN1YmplY3RJRCI6IjE5Nzc2MTkzNzg1MDEzMjkyMzYiLCJQaG9uZSI6IiIsIkdyb3VwSUQiOiIxOTc3NjE5Mzc4NDk3MTMwODM2IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiam9obm55bGVlY2hldWt5YW5AZ21haWwuY29tIiwiQ3JlYXRlVGltZSI6IjIwMjUtMTAtMzEgMDk6NTI6MDIiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.Fqhu2-miIUrzYMHiaTKb6FQY9YLrOT2SO5Z1ys6Y2C33yx6u5gxMYeczMjPz4vzl10P0rPDRYJcw3bqT33OSuke0JrIIrKm5bshigHmMK44lrxH9HbEBM11TYnaIJXN7TjQuh-EPZT6TKki36yqTyBMQhYFJ16-KlcLFuXv3eB8u88qUZdsD3QYR8VFEynHIuKkxEywmnaSjjJejz60lMy6ETsR26BJ9duGolY7Soxg3AEJO8kqMnpPhEmSMXiCLormZYEek3-t-8FiexOLqXbpz2FdJFig4IlNgkUFK3BpQ6JQA6vN69AP7eY5QDMsrQiLwMLg1CmeNeQBbfrakSg';  // 替換為您的 API 密鑰
+
+    document.getElementById('generate-btn').addEventListener('click', async () => {
+
+        const prompt = document.getElementById('prompt').value;
+        const duration = 6;
+        const model = document.getElementById('model').value;
+        // const resolution = document.getElementById('resolution').value;
+        const image_url = generatedImageUrl;
+        const statusElement_notice = document.getElementById('status_notice');
+        const statusElement_process = document.getElementById('status_process');
+        const statusElement_success = document.getElementById('status_success');
+        const statusElement_fail = document.getElementById('status_fail');
+        const taskIdElement = document.getElementById('task-id');
+        const loaderElement = document.getElementById('loader');
+
+        const generateBtn = document.getElementById('generate-btn');
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Generating...';
+                
+
+        // 生成影片請求
+        try {
+            const createResponse = await fetch('https://api.minimax.io/v1/video_generation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    prompt: prompt,
+                    subject_reference: [
+                        {
+                            type: "character",
+                            image: [image_url]
+                        }
+                    ]
+                })
+            });
+
+            const createData = await createResponse.json();
+            
+            if (createData.base_resp.status_code === 0) {
+                const taskId = createData.task_id;
+                statusElement_notice.textContent = 'The generation process will take around 5 minutes. Please do not leave this page.';
+                taskIdElement.textContent = taskId;
+                checkStatus(taskId);
+            } else {
+                statusElement_fail.textContent = 'Error: ' + createData.base_resp.status_msg;
+                generateBtn.disabled = false; // 启用按钮并恢复状态
+                generateBtn.innerHTML = 'Fail';
+                downloadElement.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('An error occurred while generating the video:', error);
+            statusElement_fail.textContent = 'Error: ' + error.message;
+            generateBtn.disabled = false; // 启用按钮并恢复状态
+            generateBtn.innerHTML = 'Fail';
+            downloadElement.style.display = 'none';
+        }
+    });
+
+
+    async function checkStatus(taskId) {
+        const statusElement_process = document.getElementById('status_process');
+        const statusElement_success = document.getElementById('status_success');
+        const statusElement_fail = document.getElementById('status_fail');
+
+        const interval = setInterval(async () => {
+            try {
+                const statusResponse = await fetch(`https://api.minimax.io/v1/query/video_generation?task_id=${taskId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`
+                    }
+                });
+
+                const statusData = await statusResponse.json();
+                if (statusData.base_resp.status_code === 0) {
+                    if (statusData.status === 'Success') {
+                        clearInterval(interval);
+                        const fileId = statusData.file_id;
+                        statusElement_success.textContent = 'The video has been generated.';
+
+                        // 取得影片下載鏈接
+                        await getDownloadLink(fileId);
+                    } else {
+                        statusElement_process.textContent = 'Video Status: ' + statusData.status;
+                    }
+                } else {
+                    clearInterval(interval);
+                    statusElement_fail.textContent = 'Error: ' + statusData.base_resp.status_msg;
+                }
+            } catch (error) {
+                clearInterval(interval);
+                console.error('An error occurred while querying the status:', error);
+                statusElement_fail.textContent = 'Error: ' + error.message;
+            }
+        }, 5000); // 每5秒查詢一次狀態
+    }
+
+    async function getDownloadLink(fileId) {
+        const downloadElement = document.getElementById('download-btn');
+        const downloadUrlElement = document.getElementById('download-url');
+        const loaderElement = document.getElementById('loader');
+        
+        try {
+            const downloadResponse = await fetch(`https://api.minimax.io/v1/files/retrieve?file_id=${fileId}`, {
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const downloadData = await downloadResponse.json();
+            const generateBtn = document.getElementById('generate-btn');
+                    generateBtn.disabled = false; // 启用按钮并恢复状态
+                    generateBtn.innerHTML = 'Generated.';
+            
+            if (downloadData.base_resp.status_code === 0) {
+                const downloadUrl = downloadData.file.download_url;
+                downloadElement.href = downloadUrl;
+                downloadElement.textContent = 'Dowload Video';
+                downloadElement.style.display = 'inline'; // 顯示下載按鈕
+                downloadUrlElement.textContent = downloadUrl; // 顯示影片鏈接   
+            } else {
+                console.error('Failed to retrieve download link:', downloadData.base_resp.status_msg);
+            }
+        } catch (error) {
+            console.error('Download link request failed.:', error);
+        }
+    } 
+});
+
+
+</script>
+    
+</body>
+</html>

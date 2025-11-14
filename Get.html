@@ -1,53 +1,66 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GET Video</title>
+    <title>Get</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .loading { display: none; }
+        body {
+            background-color: white; /* 深黑色背景 */
+        }
     </style>
 </head>
 <body>
-    <nav class="bg-gray-800 py-4">
-        <div class="container mx-auto flex justify-center">
+    <nav class="py-4">
+        <div class="container ml-5 flex items-center">
+            <img src="./public/ITELogo_Blue_White.png" alt="Logo" style="width: 60px;">
+            <p>宏業教育中心<br>Innovation Trend Education Centre</p>
+        </div>
+        <div class="container flex mt-4 ml-10">
             <ul class="flex space-x-8">
-                <li><a href="minimax_Text.html" class="text-yellow-400 hover:text-yellow-100">Text</a></li>
-                <li><a href="minimax_Image.html" class="text-yellow-400 hover:text-yellow-100">Image</a></li>
-                <li><a href="minimax_Subject-Reference.html" class="text-yellow-400 hover:text-yellow-100">Subject-Reference</a></li>
-                <li><a href="minimax_Get.html" class="text-yellow-400 hover:text-yellow-100">GET Video</a></li>
-                <li><a href="minimax_UploadImage.html" class="text-yellow-400 hover:text-yellow-100">Upload Image</a></li>
+                <li><a href="T2V.html" class="text-gray-500 hover:text-gray-300">T2V</a></li>
+                <li><a href="I2V.html" class="text-gray-500 hover:text-gray-800">I2V</a></li>
+                <li><a href="S2V.html" class="text-gray-500 hover:text-gray-800">S2V</a></li>
+                <li><a href="Get.html" class="text-gray-800 hover:text-gray-800 font-extrabold underline">Get Video</a></li>
             </ul>
         </div>
     </nav>
-
-    <main class="flex items-center justify-center h-screen bg-gray-900">
-        <div class="bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-        <h1 class="text-white text-3xl font-bold mb-6 text-center">Video<br><span class="text-yellow-400">Download</span></h1>
-        
-        <label for="task-id" class="text-white text-lg font-semibold mb-2">Task id:</label>
-        <input id="task-id" type="text" class="w-full p-2 rounded-md border border-gray-600 bg-gray-700 text-white placeholder-gray-500" placeholder="Please enter Task id.">
-        
-        <button id="check-status-btn" class="mt-4 w-full bg-gray-500 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">Request Status</button>
-        
-        <div class="" style="width:30%"><img id="loader" class="loading" src="./spinner-8565_512.gif" width="100%" height="100%"></iframe></div>
-        <p id="status" class="my-8 text-gray-300 text-center"></p>
-        
-        <a id="download-btn" href="#" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200 mt-4 hidden">Download Video</a>
+    <main class="p-5 ml-5">
+        <div class="">
+            <h1 class="text-gray-800 text-2xl font-bold mb-6"><span class="text-yellow-400">Download</span> video from task id</h1>
+            <p class="mb-1">Task id</p>
+            <textarea id="task-id" rows="1" class="w-full md:w-4/5 p-2 rounded-md border border-gray-300 bg-gray-100 text-gray-800 placeholder-gray-500" placeholder="Please enter your task id..."></textarea><br>
+        </div>
+        <div class="">
+            <button id="check-status-btn" class="mt-10 mb-4 bg-gray-800 hover:bg-gray-400 text-white font-semibold py-2 px-4 rounded-md transition duration-200">Request Status</button>
+        </div>
+        <div>
+            <p id="status_process" class="my-4 text-blue-600"></p>
+            <p id="status_success" class="my-4 text-green-600"></p>
+            <p id="status_fail" class="my-4 text-red-600"></p>
+            <a id="download-btn" href="#" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200 hidden">Download Video</a>
+        </div>
     </div>
     </main>
 
-    <script>
+<script>
         const apiKey = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiJKb2hubnkgTGVlIiwiVXNlck5hbWUiOiJKb2hubnkgTGVlIiwiQWNjb3VudCI6IiIsIlN1YmplY3RJRCI6IjE5Nzc2MTkzNzg1MDEzMjkyMzYiLCJQaG9uZSI6IiIsIkdyb3VwSUQiOiIxOTc3NjE5Mzc4NDk3MTMwODM2IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiam9obm55bGVlY2hldWt5YW5AZ21haWwuY29tIiwiQ3JlYXRlVGltZSI6IjIwMjUtMTAtMzEgMDk6NTI6MDIiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.Fqhu2-miIUrzYMHiaTKb6FQY9YLrOT2SO5Z1ys6Y2C33yx6u5gxMYeczMjPz4vzl10P0rPDRYJcw3bqT33OSuke0JrIIrKm5bshigHmMK44lrxH9HbEBM11TYnaIJXN7TjQuh-EPZT6TKki36yqTyBMQhYFJ16-KlcLFuXv3eB8u88qUZdsD3QYR8VFEynHIuKkxEywmnaSjjJejz60lMy6ETsR26BJ9duGolY7Soxg3AEJO8kqMnpPhEmSMXiCLormZYEek3-t-8FiexOLqXbpz2FdJFig4IlNgkUFK3BpQ6JQA6vN69AP7eY5QDMsrQiLwMLg1CmeNeQBbfrakSg';  // 替換為您的 API 密鑰
 
         document.getElementById('check-status-btn').addEventListener('click', async () => {
+
             const taskId = document.getElementById('task-id').value;
-            const statusElement = document.getElementById('status');
+            const statusElement_process = document.getElementById('status_process');
+            const statusElement_success = document.getElementById('status_success');
+            const statusElement_fail = document.getElementById('status_fail');
             const loaderElement = document.getElementById('loader');
             const downloadElement = document.getElementById('download-btn');
 
-            loaderElement.style.display = 'block'; // 顯示加載動畫
+            const generateBtn = document.getElementById('check-status-btn');
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Requesting...';
+                
             
             try {
                 const statusResponse = await fetch(`https://api.minimax.io/v1/query/video_generation?task_id=${taskId}`, {
@@ -61,21 +74,31 @@
                 if (statusData.base_resp.status_code === 0) {
                     if (statusData.status === 'Success') {
                         const fileId = statusData.file_id;
-                        statusElement.textContent = 'Success & Complete!';
+                        statusElement_success.textContent = 'Success & Complete!';
+                        statusElement_fail.innerHTML = '';
                         
                         // 等待影片生成
                         await getDownloadLink(fileId);
                     } else {
-                        statusElement.textContent = 'Video Status: ' + statusData.status;
+                        statusElement_process.textContent = 'Video Status: ' + statusData.status;
                     }
                 } else {
-                    statusElement.textContent = 'Error: ' + statusData.base_resp.status_msg;
+                    statusElement_fail.textContent = 'Error: ' + statusData.base_resp.status_msg;
+                    generateBtn.disabled = false; // 启用按钮并恢复状态
+                    generateBtn.innerHTML = 'Fail';
+                    statusElement_success.innerHTML = '';
+                    downloadElement.style.display = 'none';
                 }
             } catch (error) {
                 console.error('An error occurred while querying the status.', error);
-                statusElement.textContent = 'Error from querying: ' + error.message;
+                statusElement_fail.textContent = 'Error from querying: ' + error.message;
+                generateBtn.disabled = false; // 启用按钮并恢复状态
+                generateBtn.innerHTML = 'Fail';
+                statusElement_success.innerHTML = '';
+                downloadElement.style.display = 'none';
             }
         }, 5000); // 每5秒查詢一次狀態
+
 
         async function getDownloadLink(fileId) {
             const downloadElement = document.getElementById('download-btn');
@@ -90,7 +113,9 @@
                 });
 
                 const downloadData = await downloadResponse.json();
-                loaderElement.style.display = 'none'; // 隱藏加載動畫
+                const generateBtn = document.getElementById('check-status-btn');
+                    generateBtn.disabled = false; // 启用按钮并恢复状态
+                    generateBtn.innerHTML = 'Generated';
 
 
                 if (downloadData.base_resp.status_code === 0) {
@@ -98,7 +123,6 @@
                     downloadElement.href = downloadUrl;
                     downloadElement.textContent = 'Dowload Video';
                     downloadElement.style.display = 'inline'; // 顯示下載按鈕
-                    downloadUrlElement.textContent = downloadUrl; // 顯示影片鏈接
                 } else {
                     console.error('An error occurred while retrieving the download link.', downloadData.base_resp.status_msg);
                 }
@@ -108,5 +132,6 @@
 
         }
     </script>
+    
 </body>
 </html>
